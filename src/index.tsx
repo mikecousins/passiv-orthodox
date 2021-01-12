@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import AuthProvider from './providers/AuthProvider';
 import reportWebVitals from './reportWebVitals';
+import './tailwind.css';
 
 axios.defaults.baseURL = 'https://api.passiv.com/api/v1/';
 

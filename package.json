@@ -21,11 +21,18 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "5.1.7",
+    "autoprefixer": "10.2.1",
+    "cross-env": "7.0.3",
+    "postcss": "8.2.4",
+    "tailwindcss": "2.0.2",
     "typescript": "4.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "prestart": "npm run create-css",
+    "prebuild": "cross-env NODE_ENV=production npm run create-css",
+    "create-css": "npx tailwindcss build node_modules/tailwindcss/tailwind.css -o src/tailwind.css",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -46,5 +53,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "postcss": {
+    "plugins": {
+      "tailwindcss": {},
+      "autoprefixer": {}
+    }
   }
 }

@@ -6,7 +6,7 @@ const TwoFactorPage = () => {
   
   return (
     <div>
-      Login
+      Token
       <Formik
         initialValues={{
           token: '',
@@ -15,7 +15,7 @@ const TwoFactorPage = () => {
       >
         {() => (
           <Form>
-            <Field name="token" />
+            <Field name="token" placeholder="token" />
             <button type="submit">Login</button>
           </Form>
         )}

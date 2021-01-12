@@ -16,8 +16,8 @@ const LoginPage = () => {
       >
         {() => (
           <Form>
-            <Field name="email" />
-            <Field name="password" type="password" />
+            <Field name="email" placeholder="email" />
+            <Field name="password" type="password" placeholder="password" />
             <button type="submit">Login</button>
           </Form>
         )}

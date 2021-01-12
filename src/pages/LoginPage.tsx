@@ -6,7 +6,7 @@ const LoginPage = () => {
   
   return (
     <div>
-      <div className="text-xl font-bold mb-4">
+      <div className="text-xl font-bold mb-4 w-64">
         Login
       </div>
       <Formik
@@ -19,10 +19,10 @@ const LoginPage = () => {
         {() => (
           <Form>
             <div>
-              <Field name="email" placeholder="email" className="bg-gray-700 p-4 mb-2" />
+              <Field name="email" placeholder="email" className="bg-gray-700 p-4 mb-2 w-full" />
             </div>
             <div>
-              <Field name="password" type="password" placeholder="password" className="bg-gray-700 p-4 mb-4" />
+              <Field name="password" type="password" placeholder="password" className="bg-gray-700 p-4 mb-4 w-full" />
             </div>
             <button
               type="submit"

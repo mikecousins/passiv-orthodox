@@ -37,7 +37,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 const storeToken = (token: string) => {
   // set the auth header in axios with our token
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  axios.defaults.headers.common['Authorization'] = `JWT ${token}`;
 
   // save our jwt token into session storage in case the page is refreshed
   localStorage.setItem('jwt', token);
@@ -52,7 +52,6 @@ const AuthProvider: FunctionComponent = ({ children }) => {
   // set our axios auth if we already have a token in storage
   useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      console.log('setting');
       // set the auth header in axios with our token
       axios.defaults.headers.common[
         'Authorization'

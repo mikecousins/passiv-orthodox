@@ -122,7 +122,7 @@ const AuthProvider: FunctionComponent = ({ children }) => {
   const logout = () => {
     setJwtToken('');
     localStorage.removeItem('jwt');
-    axios.defaults.headers.common['Authorization'] = undefined;
+    delete axios.defaults.headers.common['Authorization'];
   };
 
   return (

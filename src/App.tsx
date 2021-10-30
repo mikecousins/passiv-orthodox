@@ -10,10 +10,11 @@ import DashboardPage from './pages/DashboardPage';
 
 const App = () => {
   const queryClient = new QueryClient();
+
   return (
     <div className="bg-gray-900 h-screen text-gray-300 flex flex-col">
       <div className="flex-1" />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <QueryClientProvider client={queryClient}>
           <Router>
             <Switch>

@@ -16,8 +16,8 @@ const Group: FunctionComponent<Props> = ({ id, name }) => {
     <div className="bg-gray-800 border border-black rounded-lg shadow p-4">
       {data?.data && (
         <>
-          <div className="text-xl font-bold">{name}</div>
-          <div>{data.data.accuracy}%</div>
+          <div className="text-xl font-bold whitespace-nowrap">{name}</div>
+          <div>Accuracy: {new Intl.NumberFormat('en-CA', { maximumSignificantDigits: 3 }).format(data.data.accuracy)}%</div>
         </>
       )}
     </div>

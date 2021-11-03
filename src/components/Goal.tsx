@@ -17,10 +17,10 @@ const Goal: FunctionComponent<Props> = ({ goal, performance }) => {
   
   return (
     <>
-      Contributions
+      <div className="font-bold text-xl mt-4 mb-2">Contributions</div>
       <div>
         <span className={clsx(
-          'text-xl font-bold whitespace-nowrap',
+          'text-lg font-bold whitespace-nowrap',
           onTrack ? 'text-green-400' : 'text-red-200',
         )}>
           {onTrack ? 'On Track' : 'Off Track'}

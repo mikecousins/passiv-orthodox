@@ -22,8 +22,8 @@ const Group: FunctionComponent<Props> = ({ id, name, children }) => {
         <>
           <div className="text-4xl font-bold whitespace-nowrap">{name}</div>
           {children}
-          <div>Accuracy: {new Intl.NumberFormat('en-CA', { maximumSignificantDigits: 3 }).format(data.data.accuracy)}%</div>
-          <div>Cash: {new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(data.data.balances.find((balance: any) => balance.currency.code === 'CAD').cash)}</div>
+          <div className="text-xl font-bold my-4">Accuracy: {new Intl.NumberFormat('en-CA', { maximumSignificantDigits: 3 }).format(data.data.accuracy)}%</div>
+          <div className="text-xl font-bold my-4">Cash: {new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(data.data.balances.find((balance: any) => balance.currency.code === 'CAD').cash)}</div>
           <Trades groupId={id} trades={data.data.calculated_trades} />
         </>
       ) : (

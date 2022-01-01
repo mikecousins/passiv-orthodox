@@ -1,15 +1,11 @@
 import { FunctionComponent } from 'react';
-import { Route } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import LoginPage from '../pages/LoginPage';
 import TwoFactorPage from '../pages/TwoFactorPage';
 
-type Props = {
-  path: string;
-}
-
-const SecureRoute: FunctionComponent<Props> = ({ path, children }) => {
+const RequireAuth: FunctionComponent = ({ children }) => {
   const { isLoggedIn, needToken } = useAuth();
+  console.log(isLoggedIn, needToken);
 
   if (needToken) {
     return <TwoFactorPage />;
@@ -18,12 +14,8 @@ const SecureRoute: FunctionComponent<Props> = ({ path, children }) => {
   if (!isLoggedIn) {
     return <LoginPage />;
   }
+  
+  return <>{children}</>;
+};
 
-  return (
-    <Route path={path}>
-      {children}
-    </Route>
-  );
-}
-
-export default SecureRoute;
+export default RequireAuth;

@@ -5,6 +5,7 @@ import {
   useState,
 } from 'react';
 import axios from 'axios';
+import { isPast, parse } from 'date-fns';
 
 type PasswordLoginResponse = {
   mfa_required: {
@@ -42,6 +43,19 @@ const storeToken = (token: string) => {
   // save our jwt token into session storage in case the page is refreshed
   localStorage.setItem('jwt', token);
 };
+
+export const parseJwt = (jwt: string) => {
+  const base64Payload = jwt.split('.')[1];
+  const payload: { sub?: number; exp?: number } = JSON.parse(
+    atob(base64Payload),
+  );
+
+  return payload;
+};
+
+const isExpired = (jwt: string) => {
+  return isPast(parse(parseJwt(jwt).exp!.toString(), 't', new Date()))
+}
 
 const AuthProvider: FunctionComponent = ({ children }) => {
   const [jwtToken, setJwtToken] = useState<string>(
@@ -128,8 +142,8 @@ const AuthProvider: FunctionComponent = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn: !!jwtToken,
-        needToken: !jwtToken && !!twoFactorState,
+        isLoggedIn: !!jwtToken && !isExpired(jwtToken),
+        needToken: (!jwtToken || isExpired(jwtToken)) && !!twoFactorState,
         passwordLogin,
         tokenLogin,
         logout,

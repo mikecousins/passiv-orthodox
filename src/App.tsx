@@ -1,12 +1,15 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {
   BrowserRouter as Router,
-  Switch,
+  Navigate,
   Route,
-  Redirect,
+  Routes,
 } from 'react-router-dom';
-import SecureRoute from './components/SecureRoute';
+import RequireAuth from './components/RequireAuth';
 import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPage';
+import MarketingPage from './pages/MarketingPage';
+import TwoFactorPage from './pages/TwoFactorPage';
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -17,14 +20,18 @@ const App = () => {
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <QueryClientProvider client={queryClient}>
           <Router>
-            <Switch>
-              <SecureRoute path="/">
-                <DashboardPage />
-              </SecureRoute>
-              <Route path="*">
-                <Redirect to="/" />
-              </Route>
-            </Switch>
+            <Routes>
+              <Route path="/" element={<MarketingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/2fa" element={<TwoFactorPage />} />
+              <Route path="/dashboard" element={(
+                  <RequireAuth>
+                    <DashboardPage />
+                  </RequireAuth>
+                )}
+              />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
           </Router>
         </QueryClientProvider>
       </div>

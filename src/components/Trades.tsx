@@ -8,7 +8,6 @@ type Props = {
 }
 
 const Trades: FunctionComponent<Props> = ({ groupId, trades }) => {
-  console.log(groupId, trades);
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     () => {

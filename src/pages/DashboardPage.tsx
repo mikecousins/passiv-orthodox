@@ -5,6 +5,7 @@ import Group from '../components/Group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import Goal from '../components/Goal';
+import AnnualProgress from '../components/AnnualProgress';
 
 const DashboardPage = () => {
   const { data: groups } = useQuery('portfolioGroups', () =>
@@ -27,9 +28,16 @@ const DashboardPage = () => {
     <>
       <div>
         {group ? (
-          <Group id={group.id} name={group.name}>
-            <Goal goal={goals?.data[0]} performance={performance?.data} />
-          </Group>
+          <>
+          <div className="text-4xl font-bold whitespace-nowrap">{group.name}</div>
+          <div className="flex gap-4">
+            <div>
+              <Goal goal={goals?.data[0]} performance={performance?.data} />
+              <Group id={group.id} />
+            </div>
+            <AnnualProgress id={group.id} />
+          </div>
+          </>
         ) : (
           <FontAwesomeIcon icon={faSpinner} spin />
         )}

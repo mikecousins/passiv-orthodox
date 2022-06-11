@@ -1,7 +1,7 @@
-import { FunctionComponent } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import LoginPage from '../pages/LoginPage';
-import TwoFactorPage from '../pages/TwoFactorPage';
+import { FunctionComponent } from "react";
+import { useAuth } from "../hooks/useAuth";
+import LoginPage from "../pages/LoginPage";
+import TwoFactorPage from "../pages/TwoFactorPage";
 
 const RequireAuth: FunctionComponent = ({ children }) => {
   const { isLoggedIn, needToken } = useAuth();
@@ -14,7 +14,7 @@ const RequireAuth: FunctionComponent = ({ children }) => {
   if (!isLoggedIn) {
     return <LoginPage />;
   }
-  
+
   return <>{children}</>;
 };
 

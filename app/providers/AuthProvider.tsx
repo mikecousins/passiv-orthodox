@@ -1,18 +1,13 @@
-import {
-  createContext,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from 'react';
-import axios from 'axios';
-import { isPast, parse } from 'date-fns';
+import { createContext, FunctionComponent, useEffect, useState } from "react";
+import axios from "axios";
+import { isPast, parse } from "date-fns";
 
 type PasswordLoginResponse = {
   mfa_required: {
-    type: 'OTP_TOKEN',
-    state: string,
-  },
-  token: null
+    type: "OTP_TOKEN";
+    state: string;
+  };
+  token: null;
 };
 
 type TokenLoginResponse = {
@@ -26,50 +21,50 @@ type AuthContextType = {
     email: string,
     password: string,
     success?: () => void,
-    error?: () => void,
+    error?: () => void
   ) => void;
   tokenLogin: (token: string, success?: () => void) => void;
   logout: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined,
+  undefined
 );
 
 const storeToken = (token: string) => {
   // set the auth header in axios with our token
-  axios.defaults.headers.common['Authorization'] = `JWT ${token}`;
+  axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
 
   // save our jwt token into session storage in case the page is refreshed
-  localStorage.setItem('jwt', token);
+  localStorage.setItem("jwt", token);
 };
 
 export const parseJwt = (jwt: string) => {
-  const base64Payload = jwt.split('.')[1];
+  const base64Payload = jwt.split(".")[1];
   const payload: { sub?: number; exp?: number } = JSON.parse(
-    atob(base64Payload),
+    atob(base64Payload)
   );
 
   return payload;
 };
 
 const isExpired = (jwt: string) => {
-  return isPast(parse(parseJwt(jwt).exp!.toString(), 't', new Date()))
-}
+  return isPast(parse(parseJwt(jwt).exp!.toString(), "t", new Date()));
+};
 
 const AuthProvider: FunctionComponent = ({ children }) => {
   const [jwtToken, setJwtToken] = useState<string>(
-    localStorage.getItem('jwt') ?? '',
+    localStorage.getItem("jwt") ?? ""
   );
-  const [twoFactorState, setTwoFactorState] = useState('');
+  const [twoFactorState, setTwoFactorState] = useState("");
 
   // set our axios auth if we already have a token in storage
   useEffect(() => {
-    if (localStorage.getItem('jwt')) {
+    if (localStorage.getItem("jwt")) {
       // set the auth header in axios with our token
       axios.defaults.headers.common[
-        'Authorization'
-      ] = `JWT ${localStorage.getItem('jwt')}`;
+        "Authorization"
+      ] = `JWT ${localStorage.getItem("jwt")}`;
     }
   }, []);
 
@@ -77,7 +72,7 @@ const AuthProvider: FunctionComponent = ({ children }) => {
   useEffect(() => {
     // Use interceptor to watch for new token from api
     axios.interceptors.response.use((res) => {
-      const newToken = res.headers['X-New-Token'];
+      const newToken = res.headers["X-New-Token"];
 
       if (newToken) {
         setJwtToken(newToken);
@@ -93,10 +88,10 @@ const AuthProvider: FunctionComponent = ({ children }) => {
     email: string,
     password: string,
     success?: () => void,
-    error?: () => void,
+    error?: () => void
   ) => {
     axios
-      .post<PasswordLoginResponse>('auth/login', { email, password })
+      .post<PasswordLoginResponse>("auth/login", { email, password })
       .then((res) => {
         // store the token in local state
         setTwoFactorState(res.data.mfa_required.state);
@@ -115,7 +110,7 @@ const AuthProvider: FunctionComponent = ({ children }) => {
 
   const tokenLogin = (token: string, success?: () => void) => {
     axios
-      .put<TokenLoginResponse>('auth/login', {
+      .put<TokenLoginResponse>("auth/login", {
         token,
         state: twoFactorState,
       })
@@ -134,9 +129,9 @@ const AuthProvider: FunctionComponent = ({ children }) => {
   };
 
   const logout = () => {
-    setJwtToken('');
-    localStorage.removeItem('jwt');
-    delete axios.defaults.headers.common['Authorization'];
+    setJwtToken("");
+    localStorage.removeItem("jwt");
+    delete axios.defaults.headers.common["Authorization"];
   };
 
   return (

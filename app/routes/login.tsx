@@ -1,8 +1,10 @@
+import { useNavigate } from '@remix-run/react';
 import { Formik, Form, Field } from "formik";
 import { useAuth } from "../hooks/useAuth";
 
 const LoginPage = () => {
   const { passwordLogin } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -12,7 +14,7 @@ const LoginPage = () => {
           email: "",
           password: "",
         }}
-        onSubmit={(values) => passwordLogin(values.email, values.password)}
+        onSubmit={(values) => passwordLogin(values.email, values.password, () => navigate('/twoFactor'))}
       >
         {() => (
           <Form>

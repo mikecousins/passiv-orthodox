@@ -1,4 +1,4 @@
-import { createContext, FunctionComponent, useEffect, useState } from "react";
+import { createContext, FunctionComponent, PropsWithChildren, useEffect, useState } from "react";
 import axios from "axios";
 import { isPast, parse } from "date-fns";
 
@@ -52,15 +52,13 @@ const isExpired = (jwt: string) => {
   return isPast(parse(parseJwt(jwt).exp!.toString(), "t", new Date()));
 };
 
-const AuthProvider: FunctionComponent = ({ children }) => {
-  const [jwtToken, setJwtToken] = useState<string>(
-    localStorage.getItem("jwt") ?? ""
-  );
+const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({ children }) => {
+  const [jwtToken, setJwtToken] = useState<string>();
   const [twoFactorState, setTwoFactorState] = useState("");
 
   // set our axios auth if we already have a token in storage
   useEffect(() => {
-    if (localStorage.getItem("jwt")) {
+    if (window && localStorage.getItem("jwt")) {
       // set the auth header in axios with our token
       axios.defaults.headers.common[
         "Authorization"

@@ -1,9 +1,11 @@
+import { useNavigate } from '@remix-run/react';
 import { Formik, Form, Field } from "formik";
 import { useAuth } from "../hooks/useAuth";
 
 const TwoFactorPage = () => {
   const { tokenLogin } = useAuth();
-
+  const navigate = useNavigate();
+  
   return (
     <div>
       <div className="text-xl font-bold mb-4 w-64">Token</div>
@@ -11,7 +13,7 @@ const TwoFactorPage = () => {
         initialValues={{
           token: "",
         }}
-        onSubmit={(values) => tokenLogin(values.token)}
+        onSubmit={(values) => tokenLogin(values.token, () => navigate('/dashboard'))}
       >
         {() => (
           <Form>

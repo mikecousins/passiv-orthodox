@@ -1,14 +1,14 @@
-import axios from "axios";
-import { FunctionComponent } from "react";
-import { useQuery } from "react-query";
-import AccountProgress from "./AccountProgress";
+import axios from 'axios';
+import { FunctionComponent } from 'react';
+import { useQuery } from 'react-query';
+import AccountProgress from './AccountProgress';
 
 type Props = {
   id: number;
 };
 
 const AnnualProgress: FunctionComponent<Props> = ({ id }) => {
-  const { data } = useQuery(["portfolioGroups", { id }], () =>
+  const { data } = useQuery(['portfolioGroups', { id }], () =>
     axios.get<any>(`portfolioGroups/${id}/info`)
   );
 
@@ -19,7 +19,7 @@ const AnnualProgress: FunctionComponent<Props> = ({ id }) => {
         {data?.data.accounts
           .filter(
             (account: any) =>
-              account.name.includes("RRSP") || account.name.includes("TFSA")
+              account.name.includes('RRSP') || account.name.includes('TFSA')
           )
           .map((account: any) => (
             <AccountProgress

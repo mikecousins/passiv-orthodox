@@ -1,10 +1,11 @@
-import { createContext, FunctionComponent, PropsWithChildren, useEffect, useState } from "react";
-import axios from "axios";
-import { isPast, parse } from "date-fns";
+import { createContext, useEffect, useState } from 'react';
+import type { FunctionComponent, PropsWithChildren } from 'react';
+import axios from 'axios';
+import { isPast, parse } from 'date-fns';
 
 type PasswordLoginResponse = {
   mfa_required: {
-    type: "OTP_TOKEN";
+    type: 'OTP_TOKEN';
     state: string;
   };
   token: null;
@@ -33,14 +34,14 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 const storeToken = (token: string) => {
   // set the auth header in axios with our token
-  axios.defaults.headers.common["Authorization"] = `JWT ${token}`;
+  axios.defaults.headers.common['Authorization'] = `JWT ${token}`;
 
   // save our jwt token into session storage in case the page is refreshed
-  localStorage.setItem("jwt", token);
+  localStorage.setItem('jwt', token);
 };
 
 export const parseJwt = (jwt: string) => {
-  const base64Payload = jwt.split(".")[1];
+  const base64Payload = jwt.split('.')[1];
   const payload: { sub?: number; exp?: number } = JSON.parse(
     atob(base64Payload)
   );
@@ -49,20 +50,22 @@ export const parseJwt = (jwt: string) => {
 };
 
 const isExpired = (jwt: string) => {
-  return isPast(parse(parseJwt(jwt).exp!.toString(), "t", new Date()));
+  return isPast(parse(parseJwt(jwt).exp!.toString(), 't', new Date()));
 };
 
-const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({ children }) => {
+const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({
+  children,
+}) => {
   const [jwtToken, setJwtToken] = useState<string>();
-  const [twoFactorState, setTwoFactorState] = useState("");
+  const [twoFactorState, setTwoFactorState] = useState('');
 
   // set our axios auth if we already have a token in storage
   useEffect(() => {
-    if (window && localStorage.getItem("jwt")) {
+    if (window && localStorage.getItem('jwt')) {
       // set the auth header in axios with our token
       axios.defaults.headers.common[
-        "Authorization"
-      ] = `JWT ${localStorage.getItem("jwt")}`;
+        'Authorization'
+      ] = `JWT ${localStorage.getItem('jwt')}`;
     }
   }, []);
 
@@ -70,7 +73,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({ children 
   useEffect(() => {
     // Use interceptor to watch for new token from api
     axios.interceptors.response.use((res) => {
-      const newToken = res.headers["X-New-Token"];
+      const newToken = res.headers['X-New-Token'];
 
       if (newToken) {
         setJwtToken(newToken);
@@ -89,7 +92,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({ children 
     error?: () => void
   ) => {
     axios
-      .post<PasswordLoginResponse>("auth/login", { email, password })
+      .post<PasswordLoginResponse>('auth/login', { email, password })
       .then((res) => {
         // store the token in local state
         setTwoFactorState(res.data.mfa_required.state);
@@ -108,7 +111,7 @@ const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({ children 
 
   const tokenLogin = (token: string, success?: () => void) => {
     axios
-      .put<TokenLoginResponse>("auth/login", {
+      .put<TokenLoginResponse>('auth/login', {
         token,
         state: twoFactorState,
       })
@@ -127,9 +130,9 @@ const AuthProvider: FunctionComponent<PropsWithChildren<unknown>> = ({ children 
   };
 
   const logout = () => {
-    setJwtToken("");
-    localStorage.removeItem("jwt");
-    delete axios.defaults.headers.common["Authorization"];
+    setJwtToken('');
+    localStorage.removeItem('jwt');
+    delete axios.defaults.headers.common['Authorization'];
   };
 
   return (

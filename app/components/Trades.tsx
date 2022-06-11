@@ -1,6 +1,6 @@
-import axios from "axios";
-import { FunctionComponent } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import axios from 'axios';
+import { FunctionComponent } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 type Props = {
   groupId: number;
@@ -26,7 +26,7 @@ const Trades: FunctionComponent<Props> = ({ groupId, trades }) => {
           className="bg-gray-500 p-2 rounded-xl ml-4 font-bold"
           onClick={() =>
             mutate(undefined, {
-              onSuccess: () => queryClient.refetchQueries("portfolioGroups"),
+              onSuccess: () => queryClient.refetchQueries('portfolioGroups'),
             })
           }
         >
